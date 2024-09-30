@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Estadísticas de Citas</title>
+    <style>
+        body {
+            background: coral;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: rgba(0,0,0,0.7);
+            width: 100%;
+            position: absolute;
+            z-index: 100;
+        }
+
+        nav {
+            float: left;
+        }
+
+        nav ul {
+            list-style: none;
+            overflow: hidden;
+        }
+
+        nav ul li {
+            float: left;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+        }
+        nav ul li a {
+            display: block;
+            padding: 10px;
+            color: #fff;
+            text-decoration: none;
+        }
+        nav ul li:hover {
+            background: #eca023;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            padding: 10px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        td{
+            background-color: white;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- ========== NavBar Start ========== -->
+    <header th:replace="~{Fragmentos/navbar :: nav_bar}"></header>
+    <!-- Navbar End -->
+</div>
+<br><br><br><br>
+
+<h1>Estadísticas de Citas</h1>
+
+<!-- Citas por Sede -->
+<div class="section">
+    <h2 style="color: white">Citas por Sede</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Sede</th>
+            <th>Total Citas</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="estadistica : ${citasPorSede}">
+            <td th:text="${estadistica.sede}"></td>
+            <td th:text="${estadistica.totalCitas}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Citas por Área -->
+<div class="section">
+    <h2 style="color: white">Citas por Área</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Área</th>
+            <th>Total Citas</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="estadistica : ${citasPorArea}">
+            <td th:text="${estadistica.area}"></td>
+            <td th:text="${estadistica.totalCitas}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Citas por Profesional -->
+<div class="section">
+    <h2 style="color: white">Citas por Profesional</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Profesional</th>
+            <th>Total Citas</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="estadistica : ${citasPorProfesional}">
+            <td th:text="${estadistica.profesional}"></td>
+            <td th:text="${estadistica.totalCitas}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
