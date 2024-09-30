@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Agendar Cita</title>
+  <style>
+    body {
+      background: coral;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: rgba(0,0,0,0.7);
+      width: 100%;
+      position: absolute;
+      z-index: 100;
+    }
+
+    nav {
+      float: left;
+    }
+
+    nav ul {
+      list-style: none;
+      overflow: hidden;
+    }
+
+    nav ul li {
+      float: left;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+    }
+    nav ul li a {
+      display: block;
+      padding: 10px;
+      color: #fff;
+      text-decoration: none;
+    }
+    nav ul li:hover {
+      background: #eca023;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f7f7f7;
+      border-radius: 10px;
+    }
+    input, select, button {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .message {
+      text-align: center;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    .success {
+      background-color: #dff0d8;
+      color: #3c763d;
+    }
+    .error {
+      background-color: #f2dede;
+      color: #a94442;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- ========== NavBar Start ========== -->
+  <header th:replace="~{Fragmentos/navbar :: nav_bar}"></header>
+  <!-- Navbar End -->
+</div>
+<br><br><br><br>
+
+<h2 style="text-align: center;color: white">Agendar Cita con <span th:text="${profesional.nombre}"></span></h2>
+
+<div th:if="${error}" class="message error">
+  <p th:text="${error}"></p>
+</div>
+
+<div th:if="${success}" class="message success">
+  <p th:text="${success}"></p>
+</div>
+
+<form th:action="@{/Cita/Guardar}" method="post">
+  <input type="hidden" name="profesionalId" th:value="${profesional.idProfesional}" />
+
+  <label for="nombre">Nombre y Apellido:</label>
+  <input type="text" id="nombre" name="nombre" required>
+
+  <label for="dni">Documento de Identidad (DNI):</label>
+  <input type="text" id="dni" name="dni" required>
+
+  <label for="edad">Edad:</label>
+  <input type="text" id="edad" name="edad" required>
+
+  <label for="motivoConsulta">Motivo de Consulta:</label>
+  <input type="text" id="motivoConsulta" name="motivoConsulta" required>
+
+  <label for="area">Área de consulta:</label>
+  <select id="area" name="area" required>
+    <option th:each="area : ${todasLasAreas}" th:value="${area.idArea}" th:text="${area.nombreArea}"></option>
+  </select>
+
+  <label for="sede">Sede de Atención:</label>
+  <select id="sede" name="sede" required>
+    <option th:each="sede : ${todasLasSedes}" th:value="${sede.idsede}" th:text="${sede.nombreSede}"></option>
+  </select>
+
+  <label for="fecha">Fecha de Consulta:</label>
+  <select id="fecha" name="disponibilidadId" required>
+    <option th:each="dispon : ${disponibilidad}" th:value="${dispon.idDisponibilidad}" th:text="${dispon.fecha}"></option>
+  </select>
+
+  <label for="riesgo">Selecciona el Riesgo:</label>
+  <select name="riesgoId" id="riesgo" required>
+    <option value="1">Bajo</option>
+    <option value="2">Medio</option>
+    <option value="3">Alto</option>
+    <option value="4">Muy Alto</option>
+  </select>
+
+  <label for="duracion">Duración de la Cita:</label>
+  <select id="duracion" name="duracion" required>
+    <option value="30">Media Hora</option>
+    <option value="60">Una Hora</option>
+  </select>
+
+  <button type="submit">Reservar Cita</button>
+</form>
+</body>
+</html>
