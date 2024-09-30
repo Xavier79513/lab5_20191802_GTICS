@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Citas</title>
+    <style>
+        body {
+            background: coral;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: rgba(0,0,0,0.7);
+            width: 100%;
+            position: absolute;
+            z-index: 100;
+        }
+
+        nav {
+            float: left;
+        }
+
+        nav ul {
+            list-style: none;
+            overflow: hidden;
+        }
+
+        nav ul li {
+            float: left;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+        }
+        nav ul li a {
+            display: block;
+            padding: 10px;
+            color: #fff;
+            text-decoration: none;
+        }
+        nav ul li:hover {
+            background: #eca023;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .message {
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .no-results {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+
+        .filter-form {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- ========== NavBar Start ========== -->
+    <header th:replace="~{Fragmentos/navbar :: nav_bar}"></header>
+    <!-- Navbar End -->
+</div>
+
+<div class="content">
+    <h2>Lista de Citas</h2>
+
+    <!-- Filtros -->
+    <form class="filter-form" th:action="@{/Cita/Filtrar}" method="get">
+        <label for="profesional">Filtrar por Profesional:</label>
+        <select id="profesional" name="profesionalId">
+            <option value="">Todos</option>
+            <option th:each="prof : ${profesionales}" th:value="${prof.idProfesional}" th:text="${prof.nombre}"></option>
+        </select>
+
+        <label for="area">Filtrar por Área:</label>
+        <select id="area" name="areaId">
+            <option value="">Todas</option>
+            <option th:each="area : ${areas}" th:value="${area.idArea}" th:text="${area.nombreArea}"></option>
+        </select>
+
+        <label for="sede">Filtrar por Sede:</label>
+        <select id="sede" name="sedeId">
+            <option value="">Todas</option>
+            <option th:each="sede : ${sedes}" th:value="${sede.idsede}" th:text="${sede.nombreSede}"></option>
+        </select>
+
+        <label for="riesgo">Filtrar por Riesgo:</label>
+        <select id="riesgo" name="riesgoId">
+            <option value="">Todos</option>
+            <option value="1">Bajo</option>
+            <option value="2">Medio</option>
+            <option value="3">Alto</option>
+            <option value="4">Muy Alto</option>
+        </select>
+
+        <label for="fecha">Filtrar por Fecha:</label>
+        <input type="date" id="fecha" name="fecha">
+
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <!-- Mensaje si no hay resultados -->
+    <div th:if="${citas.size() == 0}" class="message no-results">
+        <p>No se encontraron pacientes</p>
+    </div>
+
+    <!-- Tabla de citas -->
+    <table th:if="${citas.size() > 0}">
+        <thead>
+        <tr>
+            <th>Paciente</th>
+            <th>DNI</th>
+            <th>Edad</th>
+            <th>Motivo de Consulta</th>
+            <th>Profesional</th>
+            <th>Área</th>
+            <th>Fecha</th>
+            <th>Precio</th>
+            <th>Riesgo</th>
+            <th>Sede</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cita : ${citas}">
+            <td th:text="${cita.paciente.nombre}"></td>
+            <td th:text="${cita.paciente.dni}"></td>
+            <td th:text="${cita.paciente.edad}"></td>
+            <td th:text="${cita.motivoConsulta}"></td>
+            <td th:text="${cita.profesional.nombre}"></td>
+            <td th:text="${cita.profesional.area.nombreArea}"></td>
+            <td th:text="${cita.disponibilidad.fecha != null ? #dates.format(cita.disponibilidad.fecha, 'yyyy-MM-dd') : 'Sin fecha'}"></td>
+            <td th:text="${cita.precio}"></td>
+            <td th:text="${cita.riesgo.nivel}"></td>
+            <td th:text="${cita.profesional.sede.nombreSede}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Botón de registrar nueva cita -->
+    <a th:href="@{/Cita/Nueva}" style="display:block; text-align:center; margin-top: 20px;">
+        <button>Registrar Nueva Cita</button>
+    </a>
+</div>
+</body>
+</html>
