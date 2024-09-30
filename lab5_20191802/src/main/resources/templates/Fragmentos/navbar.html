@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<body>
+<header th:fragment="nav_bar">
+  <div class="navbar-header">
+    <nav>
+      <ul>
+        <li><a href="/sistema/pagina">Inicio</a></li>
+        <li><a href="/Profesional/Principal">Profesionales</a></li>
+        <li><a th:href="@{/Cita/Nueva(profesionalId=${1})}">Citas</a></li>
+        <li><a href="">Pacientes</a></li>
+        <li><a href="">Foro</a></li>
+        <li><a href="">Recursos</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+</br>
+</br>
+</br>
+</br>
+</body>
+</html>
